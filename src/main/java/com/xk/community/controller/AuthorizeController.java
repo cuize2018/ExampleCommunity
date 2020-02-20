@@ -2,6 +2,8 @@ package com.xk.community.controller;
 
 import com.xk.community.dto.AccessTokenDto;
 import com.xk.community.dto.GithubUser;
+import com.xk.community.mapper.UserMapper;
+import com.xk.community.model.User;
 import com.xk.community.provider.GithubProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,12 +12,16 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.UUID;
 
 @Controller
 public class AuthorizeController {
 
     @Autowired
     private GithubProvider githubProvider;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Value("${github.client.id}")
     private String client_id;
@@ -39,11 +45,19 @@ public class AuthorizeController {
         accessTokenDto.setRedirect_uri(redirect_url);
 
         String accessToken = githubProvider.getAccessToken(accessTokenDto);
-        GithubUser user = githubProvider.getUser(accessToken);
+        GithubUser githubUser = githubProvider.getUser(accessToken);
 
-        if (user != null){
+        if (githubUser != null){
+            User user = new User();
+            user.setToken(UUID.randomUUID().toString());
+            user.setName(githubUser.getName());
+            user.setAccount_id(String.valueOf(githubUser.getId()));
+            user.setGmt_create(System.currentTimeMillis());
+            user.setGmt_modified(user.getGmt_create());
+
+            userMapper.insert(user);//将user数据模型的信息插入数据库中user表
             //登录成功，写cookie和session
-            httpServletRequest.getSession().setAttribute("user", user);
+            httpServletRequest.getSession().setAttribute("user", githubUser);
             return "redirect:/";//使用"redirect"前缀，此时重新调用index页面
         }
         else {
