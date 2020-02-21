@@ -1,0 +1,15 @@
+/*主题样式*/
+body{
+    background-color: #efefef;
+}
+/*主文本框样式*/
+.main{
+    background-color: white;
+    margin: 30px;
+
+}
+/*发布按钮样式*/
+.btn-publish{
+    float: right;
+    margin-bottom: 15px;
+}
