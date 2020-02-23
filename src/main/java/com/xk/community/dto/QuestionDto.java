@@ -1,9 +1,13 @@
-package com.xk.community.model;
+package com.xk.community.dto;
 
+import com.xk.community.model.User;
 import lombok.Data;
 
+/**
+ * 用于组床User和Question的类
+ */
 @Data
-public class Question {
+public class QuestionDto {
     private Integer id;
     private String title;
     private String description;
@@ -14,4 +18,5 @@ public class Question {
     private Integer view_count;
     private Integer like_count;
     private String tag;
+    private User user;
 }

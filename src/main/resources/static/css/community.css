@@ -13,3 +13,16 @@ body{
     float: right;
     margin-bottom: 15px;
 }
+
+/*问题列表头像 */
+.media-object{
+    width: 38px;
+    height: 38px;
+}
+
+/*标签戳文本风格*/
+.text-desc{
+    font-size: 12px;
+    font-weight: normal;
+    color: #999;
+}
