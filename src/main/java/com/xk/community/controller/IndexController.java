@@ -1,19 +1,17 @@
 package com.xk.community.controller;
 
-import com.xk.community.dto.QuestionDto;
-import com.xk.community.mapper.QuestionMapper;
+import com.xk.community.dto.PageDto;
 import com.xk.community.mapper.UserMapper;
-import com.xk.community.model.Question;
 import com.xk.community.model.User;
 import com.xk.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 @Controller
 public class IndexController {
@@ -23,9 +21,19 @@ public class IndexController {
     @Autowired
     private QuestionService questionService;
 
+    /**
+     *
+     * @param httpServletRequest request请求
+     * @param model 前后端交互的模型
+     * @param page 当前页码
+     * @param size 每一页可以显示的最大页面数目
+     * @return 跳转到的页面地址
+     */
     @GetMapping("/")
     public String index(HttpServletRequest httpServletRequest,
-                        Model model){
+                        Model model,
+                        @RequestParam(name = "page", defaultValue = "1") Integer page,
+                        @RequestParam(name = "size", defaultValue = "5") Integer size) {
         Cookie[] cookies = httpServletRequest.getCookies();
 
         if (cookies != null && cookies.length != 0) {
@@ -45,10 +53,11 @@ public class IndexController {
                 }
             }
         }
-        //显示处问题列表，把问题列表加入model
+        //显示页面信息，把有页面信息加入model
         //使用SpringBoot的Service来组装
-        List<QuestionDto> questions = questionService.list();
-        model.addAttribute("questions", questions);
+        PageDto pageInfo = questionService.list(page, size);
+
+        model.addAttribute("pageInfos", pageInfo);
         return "index";
     }
 }
