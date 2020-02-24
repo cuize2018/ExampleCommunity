@@ -15,7 +15,17 @@ public interface QuestionMapper {
             "                       (#{title}, #{description}, #{gmt_create}, #{gmt_modified}, #{creator}, #{tag})")
     void create(Question question);
 
+    /**
+     * 
+     * @param offset 数据库中的偏移量，如offset=5，则从第6个开始选择
+     * @param size 数据库中从offset起始可以选择的范围
+     * @return
+     */
     @Select("SELECT *\n" +
-            "FROM question")
-    List<Question> list();
+            "FROM question\n" +
+            "limit #{offset}, #{size}")
+    List<Question> list(Integer offset, Integer size);
+
+    @Select("select count(1) from question")
+    Integer count();
 }
