@@ -1,5 +1,6 @@
 package com.xk.community.service;
 
+import com.xk.community.dto.PageDto;
 import com.xk.community.dto.QuestionDto;
 import com.xk.community.mapper.QuestionMapper;
 import com.xk.community.mapper.UserMapper;
@@ -18,16 +19,24 @@ import java.util.List;
  */
 @Service
 public class QuestionService {
-
     @Autowired
     private QuestionMapper questionMapper;
     @Autowired
     private UserMapper userMapper;
 
-    //查询所有的问题，使用QuestionDto列表存储
-    public List<QuestionDto> list() {
-        List<Question> questions = questionMapper.list();
+    //根据指定页面和范围查询问题，使用PageDto页面信息存储
+    public PageDto list(Integer page, Integer size) {
+        PageDto pageDto = new PageDto();
+        Integer totalCount = questionMapper.count();
+        pageDto.setPagination(page, size, totalCount);
+
+        page = pageDto.getPage();
+        //offset = size*(page -1)
+        Integer offset = size * (page - 1);
+
+        List<Question> questions = questionMapper.list(offset, size);
         List<QuestionDto> questionDtos = new ArrayList<>();
+
         for (Question question : questions) {
             User user = userMapper.findById(question.getCreator());
             QuestionDto questionDto = new QuestionDto();
@@ -39,6 +48,8 @@ public class QuestionService {
 
             questionDtos.add(questionDto);
         }
-        return questionDtos;
+
+        pageDto.setQuestions(questionDtos);
+        return pageDto;
     }
 }
