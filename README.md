@@ -21,7 +21,8 @@
 [Github OAuth](https://developer.github.com/apps/building-oauth-apps/creating-an-oauth-app/)  
 [SpringBoot数据库](https://docs.spring.io/spring-boot/docs/2.2.4.RELEASE/reference/html/spring-boot-features.html#boot-features-embedded-database-support)  
 [MyBatis](https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)  
-[lombok](https://projectlombok.org/features/all)
+[lombok](https://projectlombok.org/features/all)  
+[jQuery](https://jquery.com/download/)
 
 
 

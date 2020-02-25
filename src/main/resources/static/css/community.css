@@ -26,3 +26,8 @@ body{
     font-weight: normal;
     color: #999;
 }
+
+/*列表组风格*/
+.profile .section{
+    margin-top: 15px;
+}

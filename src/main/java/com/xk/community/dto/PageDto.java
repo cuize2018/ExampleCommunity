@@ -19,21 +19,8 @@ public class PageDto {
     private List<Integer> pages = new ArrayList<>();//当前页能显示的全部页码
     private Integer totalPages;//总页数
 
-    public void setPagination(Integer page, Integer size, Integer totalCount) {
-        //计算总页数
-        int totalPages = totalCount / size;
-        if (totalCount % size != 0) {
-            totalPages += 1;
-        }
+    public void setPagination(Integer page, Integer totalPages) {
         this.setTotalPages(totalPages);
-
-        //控制页码范围，1 <= page <= totalPages
-        if (page < 1) {
-            page = 1;
-        }
-        if (page > totalPages) {
-            page = totalPages;
-        }
         this.setPage(page);
 
         //添加在当前页码时可显示的页码范围
@@ -52,10 +39,12 @@ public class PageDto {
         if (page == 1) {
             showPrevious = false;
         } else {
-            showPrevious = true;
+            if(page != 0) {
+                showPrevious = true;
+            }
         }
         //是否展示下一页
-        if (page == totalPages) {
+        if (page.equals(totalPages)) {
             showNext = false;
         } else {
             showNext = true;
@@ -68,7 +57,7 @@ public class PageDto {
             showFirstPage = true;
         }
 
-        //是否展示首页
+        //是否展示末页
         if (pages.contains(totalPages)) {
             showEndPage = false;
         } else {
