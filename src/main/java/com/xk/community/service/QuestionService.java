@@ -105,4 +105,16 @@ public class QuestionService {
         pageDto.setQuestions(questionDtos);
         return pageDto;
     }
+
+    public QuestionDto getById(Integer id) {
+        Question question = questionMapper.getById(id);
+        User user = userMapper.findById(question.getCreator());
+
+        QuestionDto questionDto = new QuestionDto();
+        //拷贝Question类中的属性到QuestionDto中
+        BeanUtils.copyProperties(question, questionDto);
+        //添加QuestionDto中的user属性
+        questionDto.setUser(user);
+        return questionDto;
+    }
 }

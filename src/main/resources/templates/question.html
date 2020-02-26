@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${questionInfo.getTitle()}"></title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
+</head>
+<body>
+
+<div th:insert="~{navigation.html :: nav}"></div>
+
+<div class="container-fluid main profile">
+    <!--    BootStrap栅格系统-->
+    <div class="row">
+        <!--        在最大和中等时下面部分占9,其余12-->
+        <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
+            <h4><span th:text="${questionInfo.title}"></span></h4>
+            <span class="text-desc">
+                         作者：<span th:text="${questionInfo.getUser().getName()}"></span> |
+                         发布时间：<span th:text="${#dates.format(questionInfo.getGmt_create(),'yyyy-MMMM-dd  hh:mm')}"></span> |
+                         阅读数： <span th:text="${questionInfo.getView_count()}"></span>
+            </span>
+            <hr>
+            <div class="col lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionInfo.description}"></div>
+            <hr class="col lg-12 col-md-12 col-sm-12 col-xs-12">
+            <a th:href="@{'/publish/' + ${questionInfo.getId()}}" class="community_menu">
+                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                编辑
+            </a>
+
+        </div>
+
+        <!--        在最大和中等时下面部分占3,其余12-->
+        <div class="col lg-3 col-md-3 col-sm-12 col-xs-12">
+            <div class="col lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>发起人</h4>
+                <div class="media">
+                    <div class="media-up">
+                        <a href="#">
+                            <img class="media-object img-circle head_img"
+                                 th:src="${questionInfo.getUser().getAvatar_url()}">
+                        </a>
+                    </div>
+
+                    <div class="media-body">
+                        <h5 class="media-heading name">
+                            <span th:text="${questionInfo.getUser().getName()}"></span>
+                        </h5>
+                    </div>
+                </div>
+
+            </div>
+            <hr class="col lg-12 col-md-12 col-sm-12 col-xs-12">
+
+            <div class="col lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>相关问题</h4>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

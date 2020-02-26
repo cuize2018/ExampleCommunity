@@ -31,3 +31,20 @@ body{
 .profile .section{
     margin-top: 15px;
 }
+/*编辑按钮样式*/
+.community_menu {
+    color: #999;
+    font-size: 12px;
+}
+
+/*头像样式*/
+.head_img {
+    height:64px;
+    width: 64px;
+}
+/*名称样式*/
+.name {
+    margin-top: 13px;
+    margin-bottom: 5px;
+    margin-left: 12px;
+}
