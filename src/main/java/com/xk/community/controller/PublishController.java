@@ -1,7 +1,6 @@
 package com.xk.community.controller;
 
 import com.xk.community.mapper.QuestionMapper;
-import com.xk.community.mapper.UserMapper;
 import com.xk.community.model.Question;
 import com.xk.community.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,18 +9,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import javax.servlet.http.HttpServletRequest;
 
-import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class PublishController {
-
     @Autowired
     private QuestionMapper questionMapper;
-
-    @Autowired
-    private UserMapper userMapper;
 
     //若是GET方法则渲染页面
     @GetMapping("/publish")
@@ -57,24 +51,7 @@ public class PublishController {
         }
 
         //验证用户是否登录
-        User user = null;
-        Cookie[] cookies = httpServletRequest.getCookies();
-        if (cookies != null && cookies.length != 0) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals("token")) {
-                    String token = cookie.getValue();
-                    //数据库中是否能根据此token查询到user信息
-                    user = userMapper.findByToken(token);
-
-                    if (user != null) {
-                        //若数据库中存在user信息，则把user信息写入session
-                        httpServletRequest.getSession().setAttribute("user", user);
-                    }
-                    break;
-                }
-            }
-        }
-
+        User user = (User)httpServletRequest.getSession().getAttribute("user");
         //若用户未登录，则返回publish同时显示错误信息
         if (user == null){
             model.addAttribute("error","用户未登录");
