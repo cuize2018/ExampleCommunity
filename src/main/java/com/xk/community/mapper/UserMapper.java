@@ -2,10 +2,7 @@ package com.xk.community.mapper;
 
 
 import com.xk.community.model.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 @Mapper
 public interface UserMapper {
@@ -24,4 +21,13 @@ public interface UserMapper {
             "FROM user\n" +
             "WHERE id = #{id}\n")
     User findById(@Param("id") Integer id);
+
+    @Select("SELECT *\n" +
+            "FROM user\n" +
+            "WHERE account_id = #{account_id}\n")
+    User findByAccountId(@Param("account_id") String account_id);
+
+    @Update("UPDATE user SET name=#{name}, token=#{token}, gmt_modified=#{gmt_modified}, avatar_url=#{avatar_url}\n" +
+            "WHERE account_id = #{account_id}")
+    void update(User user);
 }

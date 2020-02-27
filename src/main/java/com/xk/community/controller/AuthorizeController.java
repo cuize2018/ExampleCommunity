@@ -5,6 +5,7 @@ import com.xk.community.dto.GithubUser;
 import com.xk.community.mapper.UserMapper;
 import com.xk.community.model.User;
 import com.xk.community.provider.GithubProvider;
+import com.xk.community.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -26,6 +27,9 @@ public class AuthorizeController {
     @Autowired
     private UserMapper userMapper;
 
+    @Autowired
+    private UserService userService;
+
     @Value("${github.client.id}")
     private String client_id;
 
@@ -35,11 +39,12 @@ public class AuthorizeController {
     @Value("${github.redirect.url}")
     private String redirect_url;
 
+
     @GetMapping("/callback")
     public String callback(@RequestParam(name = "code") String code,
                            @RequestParam(name = "state") String state,
                            HttpServletRequest httpServletRequest,
-                           HttpServletResponse httpServletResponse){
+                           HttpServletResponse httpServletResponse) {
 
         AccessTokenDto accessTokenDto = new AccessTokenDto();
         accessTokenDto.setClient_id(client_id);
@@ -51,27 +56,35 @@ public class AuthorizeController {
         String accessToken = githubProvider.getAccessToken(accessTokenDto);
         GithubUser githubUser = githubProvider.getUser(accessToken);
 
-        if (githubUser != null && githubUser.getId() != null){
+        if (githubUser != null && githubUser.getId() != null) {
             User user = new User();
             String token = UUID.randomUUID().toString();
             user.setToken(token);
             user.setName(githubUser.getName());
             user.setAccount_id(String.valueOf(githubUser.getId()));
-            user.setGmt_create(System.currentTimeMillis());
-            user.setGmt_modified(user.getGmt_create());
             user.setAvatar_url(githubUser.getAvatar_url());
 
-            userMapper.insert(user);//将user数据模型的信息插入数据库中user表
-
+            userService.CreateOrUpdate(user);//将user数据模型的信息插入数据库中user表
             httpServletResponse.addCookie(new Cookie("token", token));
 
             return "redirect:/";//使用"redirect"前缀，此时重新调用index页面
-        }
-        else {
+        } else {
             //登录失败，重新登录
             return "redirect:/";
         }
 //        return "index";//不使用"redirect"前缀，此时仅仅重新渲染index页面，不修改地址
+    }
+
+    //退出登录
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest httpServletRequest,
+                         HttpServletResponse httpServletResponse) {
+        httpServletRequest.getSession().removeAttribute("user");//session中删除属性
+        //删除cookie
+        Cookie cookie = new Cookie("token", null);
+        cookie.setMaxAge(0);
+        httpServletResponse.addCookie(cookie);
+        return "redirect:/";
     }
 
 }
