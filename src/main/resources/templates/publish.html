@@ -3,11 +3,11 @@
 <head>
     <title>发布 —— 实验社区</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link rel="stylesheet" href="css/bootstrap.min.css"/>
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="css/community.css">
-    <script src="js/jquery-3.4.1.min.js"></script>
-    <script src="js/bootstrap.min.js" type="application/javascript"></script>
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="/css/community.css">
+    <script src="/js/jquery-3.4.1.min.js"></script>
+    <script src="/js/bootstrap.min.js" type="application/javascript"></script>
 </head>
 <body>
 
@@ -22,6 +22,8 @@
             <hr>
 <!--        action:当点击submit的时候表单路由到的Controller，使用post方式路由-->
             <form action="/publish" method="post">
+<!--                不需要显示-->
+                <input type="hidden" name="id" th:value="${id}">
 <!--                输入框-->
                 <div class="form-group">
                     <label for="title">问题标题（简单扼要）：</label>

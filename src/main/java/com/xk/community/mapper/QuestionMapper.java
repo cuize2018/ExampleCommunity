@@ -1,9 +1,7 @@
 package com.xk.community.mapper;
 
 import com.xk.community.model.Question;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -37,4 +35,8 @@ public interface QuestionMapper {
 
     @Select("select * from question where id = ${id}")
     Question getById(Integer id);
+
+    @Update("UPDATE question SET title=#{title}, description=#{description}, gmt_modified=#{gmt_modified}, tag=#{tag}\n" +
+            "WHERE id = #{id}")
+    void update(Question question);
 }

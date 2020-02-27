@@ -37,7 +37,7 @@
                     <span th:text="${question.getDescription()}"></span><br>
                     <span class="text-desc">• <span th:text="${question.getComment_count()}"></span>个回复
                         • <span th:text="${question.getView_count()}"></span> 次浏览
-                        • <span th:text="${#dates.format(question.getGmt_create(),'yyyy-MMMM-dd  hh:mm')}"></span></span>
+                        • 修改时间：<span th:text="${#dates.format(question.getGmt_modified(),'yyyy-MMMM-dd  hh:mm')}"></span></span>
                 </div>
             </div>
 

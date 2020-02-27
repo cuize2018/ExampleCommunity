@@ -1,12 +1,15 @@
 package com.xk.community.controller;
 
+import com.xk.community.dto.QuestionDto;
 import com.xk.community.mapper.QuestionMapper;
 import com.xk.community.model.Question;
 import com.xk.community.model.User;
+import com.xk.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -15,12 +18,21 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class PublishController {
     @Autowired
-    private QuestionMapper questionMapper;
+    private QuestionService questionService;
 
     //若是GET方法则渲染页面
     @GetMapping("/publish")
     public String publish(){
+        return "publish";
+    }
 
+    @GetMapping("/publish/{id}")
+    public String edit(@PathVariable(name = "id") Integer id,Model model){
+        QuestionDto question = questionService.getById(id);
+        model.addAttribute("title",question.getTitle());
+        model.addAttribute("description",question.getDescription());
+        model.addAttribute("tag",question.getTag());
+        model.addAttribute("id",question.getId());
 
         return "publish";
     }
@@ -30,6 +42,7 @@ public class PublishController {
     public String doPublish(@RequestParam("title") String title,
                             @RequestParam("description") String description,
                             @RequestParam("tag") String tag,
+                            @RequestParam(value = "id", required = false) Integer id,
                             HttpServletRequest httpServletRequest,
                             Model model){
 
@@ -64,10 +77,10 @@ public class PublishController {
         question.setDescription(description);
         question.setTag(tag);
         question.setCreator(user.getId());
-        question.setGmt_create(System.currentTimeMillis());
-        question.setGmt_modified(question.getGmt_create());
+        question.setId(id);
         //将表单信息添加进数据库
-        questionMapper.create(question);
+
+        questionService.createOrUpdate(question);
 
         return "redirect:/";
     }
