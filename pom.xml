@@ -119,7 +119,7 @@
                 </configuration>
             </plugin>
 
-<!--            MBG插件，自动生成Mapper-->
+<!--            mybatis generator插件，自动生成Mapper-->
             <plugin>
                 <groupId>org.mybatis.generator</groupId>
                 <artifactId>mybatis-generator-maven-plugin</artifactId>

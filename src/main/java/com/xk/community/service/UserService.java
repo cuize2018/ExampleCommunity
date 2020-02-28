@@ -36,6 +36,7 @@ public class UserService {
             updateUser.setName(user.getName());
             updateUser.setToken(user.getToken());
 
+            //使用mybatis-generator插件方法完成
             UserExample userUpdateExample = new UserExample();
             userUpdateExample.createCriteria().andIdEqualTo(dbUser.getId());
 
