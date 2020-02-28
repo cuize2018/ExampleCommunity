@@ -9,7 +9,8 @@
 [MyBatis](https://mvnrepository.com/artifact/org.mybatis.spring.boot/mybatis-spring-boot-starter/2.1.1)<br>
 [Spring Boot JDBC Starter](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc/2.2.4.RELEASE)<br>
 [FlyWay](https://flywaydb.org/documentation/maven/)<br>
-[lombok](https://projectlombok.org/setup/maven)
+[lombok](https://projectlombok.org/setup/maven)<br>
+[Mybatis Generator](https://mybatis.org/generator/running/runningWithMaven.html)
 
 ### 前端框架<br>
 [BootStrap](https://v3.bootcss.com/getting-started/#download)  
@@ -23,8 +24,12 @@
 [MyBatis](https://mybatis.org/spring-boot-starter/mybatis-spring-boot-autoconfigure/)  
 [lombok](https://projectlombok.org/features/all)  
 [jQuery](https://jquery.com/download/)<br>
-[SpringMVC](https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc-handlermapping-interceptor)
-
-
+[SpringMVC](https://docs.spring.io/spring/docs/5.0.3.RELEASE/spring-framework-reference/web.html#mvc-handlermapping-interceptor)<br>
+[Mybatis Generator](https://mybatis.org/generator/index.html)
+## 脚本
+Maven Generator
+```
+mvn -Dmybatis.generator.overwrite=true mybatis-generator:generate
+```
 
 

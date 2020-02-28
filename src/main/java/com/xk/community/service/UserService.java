@@ -2,8 +2,11 @@ package com.xk.community.service;
 
 import com.xk.community.mapper.UserMapper;
 import com.xk.community.model.User;
+import com.xk.community.model.UserExample;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -12,8 +15,12 @@ public class UserService {
 
 
     public void CreateOrUpdate(User user) {
-        User dbUser = userMapper.findByAccountId(user.getAccount_id());
-        if (dbUser == null){
+
+        UserExample userExample = new UserExample();
+        userExample.createCriteria().andAccount_idEqualTo(user.getAccount_id());
+        List<User> users = userMapper.selectByExample(userExample);
+
+        if (users.isEmpty()){
             //插入
             user.setGmt_create(System.currentTimeMillis());
             user.setGmt_modified(user.getGmt_create());
@@ -21,12 +28,18 @@ public class UserService {
         }
         else {
             //更新用户信息
-            dbUser.setGmt_modified(System.currentTimeMillis());
-            dbUser.setAvatar_url(user.getAvatar_url());
-            dbUser.setName(user.getName());
-            dbUser.setToken(user.getToken());
+            User dbUser = users.get(0);
 
-            userMapper.update(dbUser);
+            User updateUser = new User();
+            updateUser.setGmt_modified(System.currentTimeMillis());
+            updateUser.setAvatar_url(user.getAvatar_url());
+            updateUser.setName(user.getName());
+            updateUser.setToken(user.getToken());
+
+            UserExample userUpdateExample = new UserExample();
+            userUpdateExample.createCriteria().andIdEqualTo(dbUser.getId());
+
+            userMapper.updateByExampleSelective(updateUser, userUpdateExample);
         }
     }
 }
