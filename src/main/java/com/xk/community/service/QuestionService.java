@@ -2,6 +2,8 @@ package com.xk.community.service;
 
 import com.xk.community.dto.PageDto;
 import com.xk.community.dto.QuestionDto;
+import com.xk.community.exception.CustomizeErrorCode;
+import com.xk.community.exception.CustomizeException;
 import com.xk.community.mapper.QuestionMapper;
 import com.xk.community.mapper.UserMapper;
 import com.xk.community.model.Question;
@@ -119,12 +121,15 @@ public class QuestionService {
 
     public QuestionDto getById(Integer id) {
         Question question = questionMapper.selectByPrimaryKey(id);
-        User user = userMapper.selectByPrimaryKey(question.getCreator());
+        if (question == null){
+            throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+        }
 
         QuestionDto questionDto = new QuestionDto();
         //拷贝Question类中的属性到QuestionDto中
         BeanUtils.copyProperties(question, questionDto);
         //添加QuestionDto中的user属性
+        User user = userMapper.selectByPrimaryKey(question.getCreator());
         questionDto.setUser(user);
         return questionDto;
     }
@@ -148,7 +153,10 @@ public class QuestionService {
             QuestionExample example = new QuestionExample();
             example.createCriteria().andIdEqualTo(question.getId());
 
-            questionMapper.updateByExampleSelective(updateQuestion, example);
+            int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
+            if (updated != 1){
+                throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
+            }
         }
     }
 }
