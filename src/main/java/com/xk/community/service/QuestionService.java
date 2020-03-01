@@ -4,6 +4,7 @@ import com.xk.community.dto.PageDto;
 import com.xk.community.dto.QuestionDto;
 import com.xk.community.exception.CustomizeErrorCode;
 import com.xk.community.exception.CustomizeException;
+import com.xk.community.mapper.QuestionExtMapper;
 import com.xk.community.mapper.QuestionMapper;
 import com.xk.community.mapper.UserMapper;
 import com.xk.community.model.Question;
@@ -25,6 +26,9 @@ import java.util.List;
 public class QuestionService {
     @Autowired
     private QuestionMapper questionMapper;
+    @Autowired
+    private QuestionExtMapper questionExtMapper;
+
     @Autowired
     private UserMapper userMapper;
 
@@ -158,5 +162,13 @@ public class QuestionService {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
+    }
+
+    public void incView(Integer id) {
+        Question question = new Question();
+        question.setId(id);
+        question.setView_count(1);
+
+        questionExtMapper.incView(question);
     }
 }
