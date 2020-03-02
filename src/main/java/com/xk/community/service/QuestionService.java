@@ -75,7 +75,7 @@ public class QuestionService {
         return pageDto;
     }
 
-    public PageDto list(Integer userId, Integer page, Integer size) {
+    public PageDto list(Long userId, Integer page, Integer size) {
         PageDto pageDto = new PageDto();
 
         QuestionExample example = new QuestionExample();
@@ -123,7 +123,7 @@ public class QuestionService {
         return pageDto;
     }
 
-    public QuestionDto getById(Integer id) {
+    public QuestionDto getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
         if (question == null){
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
@@ -164,7 +164,7 @@ public class QuestionService {
         }
     }
 
-    public void incView(Integer id) {
+    public void incView(Long id) {
         Question question = new Question();
         question.setId(id);
         question.setView_count(1);

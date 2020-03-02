@@ -19,6 +19,13 @@
     set
     view_count = view_count + #{view_count,jdbcType=INTEGER}
     where id = #{id}
-  </update>
+    </update>
+
+    <update id="incCommentCount" parameterType="com.xk.community.model.Question">
+    update question
+    set
+    comment_count = comment_count + #{comment_count,jdbcType=INTEGER}
+    where id = #{id}
+    </update>
 
 </mapper>
