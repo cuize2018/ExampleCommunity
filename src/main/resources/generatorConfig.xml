@@ -39,5 +39,9 @@
             <property name="useActualColumnNames" value="true"/>
         </table>
 
+        <table schema="community" tableName="comment" domainObjectName="Comment" >
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+
     </context>
 </generatorConfiguration>
