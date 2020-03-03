@@ -42,13 +42,15 @@ body{
     height:64px;
     width: 64px;
 }
-/*名称样式*/
+/*回复名称样式*/
 .name {
-    margin-top: 13px;
-    margin-bottom: 5px;
-    margin-left: 12px;
+    padding-top: 10px;
 }
 
 .jumbotron{
     margin: 50px;
+}
+/*回复框样式*/
+.comment{
+    margin: 10px 0;
 }
