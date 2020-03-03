@@ -10,6 +10,7 @@ import com.xk.community.model.Comment;
 import com.xk.community.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CommentService {
@@ -19,7 +20,8 @@ public class CommentService {
     private QuestionMapper questionMapper;
     @Autowired
     private QuestionExtMapper questionExtMapper;
-
+    //事务注解，以下整个方法为事务
+    @Transactional
     public void insert(Comment comment) {
         if (comment.getParent_id() == null || comment.getParent_id() == 0){
             throw new CustomizeException(CustomizeErrorCode.TARGET_PARAM_NOT_FOUND);
