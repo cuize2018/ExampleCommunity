@@ -15,7 +15,18 @@ function post() {
                 $("#comment_section").hide();
             }
             else {
-                alert(response.message);
+                if(response.code == 2003){
+                    //如果未登录，则登录后关掉首页
+                    var isAccepted = confirm(response.message);
+                    if (isAccepted){
+                        window.open("https://github.com/login/oauth/authorize?client_id=174625521473a43a1f1b&\n" +
+                            "redirect_uri=http://localhost:8080/callback&scope=user&state=1");
+                        window.localStorage.setItem("closable", true); //在浏览器中存储是否关掉页面
+                    }
+                }
+                else {
+                    alert(response.message);
+                }
             }
             console.log(response);
         },

@@ -33,8 +33,10 @@ body{
 }
 /*编辑按钮样式*/
 .community_menu {
+    display: block;
     color: #999;
-    font-size: 12px;
+    font-size: 13px;
+    margin-bottom: 15px;
 }
 
 /*头像样式*/
@@ -47,10 +49,40 @@ body{
     padding-top: 10px;
 }
 
+/*右侧名称样式*/
+.name_profile {
+    padding-top: 20px;
+}
+
 .jumbotron{
     margin: 50px;
 }
 /*回复框样式*/
 .comment{
     margin: 10px 0;
+}
+/*评论分割线*/
+.comment_sp{
+    margin-top: 0;
+}
+
+.menu{
+    color: #999;
+    margin-top: 5px;
+}
+
+.menu .icon{
+    margin-right: 6px;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.menu .icon:hover{
+    color: #499ef3;
+}
+/*评论展示*/
+.comments{
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
 }

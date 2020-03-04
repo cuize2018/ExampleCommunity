@@ -1,6 +1,6 @@
 package com.xk.community.controller;
 
-import com.xk.community.dto.CommentDto;
+import com.xk.community.dto.CommentCreateDto;
 import com.xk.community.dto.ResultDto;
 import com.xk.community.exception.CustomizeErrorCode;
 import com.xk.community.model.Comment;
@@ -24,7 +24,7 @@ public class CommentController {
     @ResponseBody
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     //@RequestBody注解，可以通过前端传来的json数据反序列化出对象
-    public Object post(@RequestBody CommentDto commentDto,
+    public Object post(@RequestBody CommentCreateDto commentCreateDto,
                        HttpServletRequest httpServletRequest){
 
         User user = (User)httpServletRequest.getSession().getAttribute("user");
@@ -33,9 +33,9 @@ public class CommentController {
         }
 
         Comment comment = new Comment();
-        comment.setParent_id(commentDto.getParent_id());
-        comment.setContent(commentDto.getContent());
-        comment.setType(commentDto.getType());
+        comment.setParent_id(commentCreateDto.getParent_id());
+        comment.setContent(commentCreateDto.getContent());
+        comment.setType(commentCreateDto.getType());
         comment.setGmt_create(System.currentTimeMillis());
         comment.setGmt_modified(comment.getGmt_create());
         comment.setCommentator(user.getId());

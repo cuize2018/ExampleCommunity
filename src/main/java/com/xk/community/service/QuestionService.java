@@ -141,6 +141,9 @@ public class QuestionService {
     public void createOrUpdate(Question question) {
         if (question.getId() == null){
             //创建问题
+            question.setComment_count(0);
+            question.setLike_count(0);
+            question.setView_count(0);
             question.setGmt_create(System.currentTimeMillis());
             question.setGmt_modified(question.getGmt_create());
 

@@ -78,6 +78,7 @@ public class PublishController {
         question.setTag(tag);
         question.setCreator(user.getId());
         question.setId(id);
+
         //将表单信息添加进数据库
 
         questionService.createOrUpdate(question);
