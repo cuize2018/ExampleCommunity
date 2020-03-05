@@ -65,6 +65,18 @@ body{
 .comment{
     margin: 10px 0;
 }
+
+.sub-comments{
+    border-radius: 5px;
+    margin-top: 10px;
+    border: 1px solid #eee;
+    padding-top: 15px;
+    margin-bottom: 15px;
+}
+
+.sub-comments .btn-comment{
+    margin: 10px 0;
+}
 /*评论分割线*/
 .comment_sp{
     margin-top: 0;
@@ -79,6 +91,11 @@ body{
     margin-right: 6px;
     font-size: 15px;
     cursor: pointer;
+}
+
+.menu .active{
+    color: #499ef3;
+
 }
 
 .menu .icon:hover{

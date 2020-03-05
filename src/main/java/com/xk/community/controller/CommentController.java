@@ -1,7 +1,9 @@
 package com.xk.community.controller;
 
 import com.xk.community.dto.CommentCreateDto;
+import com.xk.community.dto.CommentDto;
 import com.xk.community.dto.ResultDto;
+import com.xk.community.enums.CommentTypeEnum;
 import com.xk.community.exception.CustomizeErrorCode;
 import com.xk.community.model.Comment;
 import com.xk.community.model.User;
@@ -9,12 +11,10 @@ import com.xk.community.service.CommentService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @Controller
 public class CommentController {
@@ -26,14 +26,14 @@ public class CommentController {
     @RequestMapping(value = "/comment", method = RequestMethod.POST)
     //@RequestBody注解，可以通过前端传来的json数据反序列化出对象
     public Object post(@RequestBody CommentCreateDto commentCreateDto,
-                       HttpServletRequest httpServletRequest){
+                       HttpServletRequest httpServletRequest) {
 
-        User user = (User)httpServletRequest.getSession().getAttribute("user");
-        if (user == null){
-           return ResultDto.errorOf(CustomizeErrorCode.USER_NOT_LOGIN);
+        User user = (User) httpServletRequest.getSession().getAttribute("user");
+        if (user == null) {
+            return ResultDto.errorOf(CustomizeErrorCode.USER_NOT_LOGIN);
         }
 
-        if (commentCreateDto == null || StringUtils.isBlank(commentCreateDto.getContent())){
+        if (commentCreateDto == null || StringUtils.isBlank(commentCreateDto.getContent())) {
             return ResultDto.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
         }
 
@@ -48,5 +48,12 @@ public class CommentController {
         commentService.insert(comment);
 
         return ResultDto.okOf();
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/comment/{id}", method = RequestMethod.GET)
+    public ResultDto<List<CommentDto>> comments(@PathVariable(name = "id") Long id) {
+        List<CommentDto> commentDtos = commentService.listByTargetId(id, CommentTypeEnum.COMMENT);
+        return ResultDto.okOf(commentDtos);
     }
 }
