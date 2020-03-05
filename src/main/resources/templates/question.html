@@ -20,14 +20,14 @@
         <!--        在最大和中等时下面部分占9,其余12-->
         <div class="col-lg-9 col-md-9 col-sm-12 col-xs-12">
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <h4><span th:text="${questionInfo.getTitle()}"></span></h4>
+                <h4 class="question-title"><span th:text="${questionInfo.getTitle()}"></span></h4>
                 <span class="text-desc">
                          作者：<span th:text="${questionInfo.getUser().getName()}"></span> |
                          发布时间：<span
                         th:text="${#dates.format(questionInfo.getGmt_create(),'yyyy-MM-dd  HH:mm')}"></span> |
                          阅读数： <span th:text="${questionInfo.getView_count()}"></span>
                 </span>
-                <hr>
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                 <div class="col lg-12 col-md-12 col-sm-12 col-xs-12" th:text="${questionInfo.getDescription()}"></div>
                 <hr class="col lg-12 col-md-12 col-sm-12 col-xs-12">
                 <!--            仅创建问题的用户可编辑-->
@@ -38,56 +38,63 @@
                 </a>
             </div>
 
-            <!--回复-->
-            <h4>
-                <span th:text="${questionInfo.getComment_count()}"></span> 个回复
-            </h4>
-            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment_sp">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comments" th:each="comment : ${commentInfo}">
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object img-rounded"
-                                 th:src="${comment.getUser().getAvatar_url()}">
-                        </a>
-                    </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <!--回复-->
+                <h4>
+                    <span th:text="${questionInfo.getComment_count()}"></span> 个回复
+                </h4>
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment_sp">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comments" th:each="comment : ${commentInfo}">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object img-rounded"
+                                     th:src="${comment.getUser().getAvatar_url()}">
+                            </a>
+                        </div>
 
-                    <div class="media-body">
-                        <h5 class="media-heading name">
-                            <span th:text="${comment.getUser().getName()}"></span>
-                        </h5>
-                        <!--回复内容-->
-                        <div th:text="${comment.getContent()}"></div>
-                        <div class="menu">
-                            <span class="glyphicon glyphicon-thumbs-up icon"></span>
-                            <span class="glyphicon glyphicon-comment icon"></span>
-                            <span class="pull-right" th:text="${#dates.format(comment.getGmt_create(),'yyyy-MM-dd')}"></span>
+                        <div class="media-body">
+                            <h5 class="media-heading name">
+                                <span th:text="${comment.getUser().getName()}"></span>
+                            </h5>
+                            <!--回复内容-->
+                            <div th:text="${comment.getContent()}"></div>
+                            <div class="menu">
+                                <span class="glyphicon glyphicon-thumbs-up icon"></span>
+                                <span class="glyphicon glyphicon-comment icon"></span>
+                                <span class="pull-right"
+                                      th:text="${#dates.format(comment.getGmt_create(),'yyyy-MM-dd')}"></span>
+                            </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
 
             <!--回复输入框-->
-            <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
-                <div class="media">
-                    <div class="media-left">
-                        <a href="#">
-                            <img class="media-object img-rounded"
-                                 th:src="${questionInfo.getUser().getAvatar_url()}">
-                        </a>
-                    </div>
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                <h4>提交回复</h4>
 
-                    <div class="media-body">
-                        <h5 class="media-heading name">
-                            <span th:text="${questionInfo.getUser().getName()}"></span>
-                        </h5>
+                <hr class="col-lg-12 col-md-12 col-sm-12 col-xs-12 comment_sp">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" id="comment_section">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="#">
+                                <img class="media-object img-rounded"
+                                     th:src="${questionInfo.getUser().getAvatar_url()}">
+                            </a>
+                        </div>
+
+                        <div class="media-body">
+                            <h5 class="media-heading name">
+                                <span th:text="${questionInfo.getUser().getName()}"></span>
+                            </h5>
+                        </div>
                     </div>
+                    <input type="hidden" id="question_id" th:value="${questionInfo.getId()}">
+                    <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
+                    <button type="button" class="btn btn-success btn-publish" onclick="post()">回复</button>
                 </div>
-                <input type="hidden" id="question_id" th:value="${questionInfo.getId()}">
-                <textarea class="form-control comment" rows="6" id="comment_content"></textarea>
-                <button type="button" class="btn btn-success btn-publish" onclick="post()">回复</button>
             </div>
         </div>
 

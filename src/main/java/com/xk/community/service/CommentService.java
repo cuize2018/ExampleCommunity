@@ -70,7 +70,7 @@ public class CommentService {
         CommentExample commentExample = new CommentExample();
         commentExample.createCriteria().andParent_idEqualTo(id)
                 .andTypeEqualTo(CommentTypeEnum.QUESTION.getType());
-
+        commentExample.setOrderByClause("gmt_modified desc");
         List<Comment> comments = commentMapper.selectByExample(commentExample);
 
         if (comments.isEmpty())return new ArrayList<>();

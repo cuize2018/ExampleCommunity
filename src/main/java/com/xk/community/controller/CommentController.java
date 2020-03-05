@@ -6,6 +6,7 @@ import com.xk.community.exception.CustomizeErrorCode;
 import com.xk.community.model.Comment;
 import com.xk.community.model.User;
 import com.xk.community.service.CommentService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,6 +31,10 @@ public class CommentController {
         User user = (User)httpServletRequest.getSession().getAttribute("user");
         if (user == null){
            return ResultDto.errorOf(CustomizeErrorCode.USER_NOT_LOGIN);
+        }
+
+        if (commentCreateDto == null || StringUtils.isBlank(commentCreateDto.getContent())){
+            return ResultDto.errorOf(CustomizeErrorCode.CONTENT_IS_EMPTY);
         }
 
         Comment comment = new Comment();
