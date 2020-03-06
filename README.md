@@ -10,7 +10,8 @@
 [Spring Boot JDBC Starter](https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-jdbc/2.2.4.RELEASE)<br>
 [FlyWay](https://flywaydb.org/documentation/maven/)<br>
 [lombok](https://projectlombok.org/setup/maven)<br>
-[Mybatis Generator](https://mybatis.org/generator/running/runningWithMaven.html)
+[Mybatis Generator](https://mybatis.org/generator/running/runningWithMaven.html)<br>
+[Moment Js](http://momentjs.cn/)
 
 ### 前端框架<br>
 [BootStrap](https://v3.bootcss.com/getting-started/#download)  
