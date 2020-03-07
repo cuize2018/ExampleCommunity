@@ -24,6 +24,7 @@ public class QuestionController {
     @GetMapping("/question/{id}")
     public String question(@PathVariable(name = "id") Long id, Model model) {
         QuestionDto questionDto = questionService.getById(id);
+        List<QuestionDto> relatedQuestions = questionService.selectRelated(questionDto);
         List<CommentDto> commentDtos = commentService.listByTargetId(id, CommentTypeEnum.QUESTION);
 
         //累加阅读数
@@ -31,6 +32,7 @@ public class QuestionController {
 
         model.addAttribute("questionInfo", questionDto);
         model.addAttribute("commentInfo", commentDtos);
+        model.addAttribute("relatedQuestions", relatedQuestions);
         return "question";
     }
 

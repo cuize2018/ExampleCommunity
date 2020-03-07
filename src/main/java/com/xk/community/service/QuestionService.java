@@ -10,13 +10,16 @@ import com.xk.community.mapper.UserMapper;
 import com.xk.community.model.Question;
 import com.xk.community.model.QuestionExample;
 import com.xk.community.model.User;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 当一个请求同时需要组装Question和User的时候，
@@ -56,7 +59,9 @@ public class QuestionService {
         //offset = size*(page -1)
         int offset = size * (page - 1);
 
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(new QuestionExample(), new RowBounds(offset, size));
+        QuestionExample questionExample = new QuestionExample();
+        questionExample.setOrderByClause("gmt_modified desc");
+        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
         List<QuestionDto> questionDtos = new ArrayList<>();
 
         for (Question question : questions) {
@@ -96,7 +101,7 @@ public class QuestionService {
             page = totalPages;
         }
 
-        pageDto.setPagination(page,totalPages);
+        pageDto.setPagination(page, totalPages);
 
         //offset = size*(page -1)
         int offset = page < 1 ? 0 : size * (page - 1);
@@ -125,7 +130,7 @@ public class QuestionService {
 
     public QuestionDto getById(Long id) {
         Question question = questionMapper.selectByPrimaryKey(id);
-        if (question == null){
+        if (question == null) {
             throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
         }
 
@@ -139,7 +144,7 @@ public class QuestionService {
     }
 
     public void createOrUpdate(Question question) {
-        if (question.getId() == null){
+        if (question.getId() == null) {
             //创建问题
             question.setComment_count(0);
             question.setLike_count(0);
@@ -148,8 +153,7 @@ public class QuestionService {
             question.setGmt_modified(question.getGmt_create());
 
             questionMapper.insert(question);
-        }
-        else {
+        } else {
             //更新问题
             Question updateQuestion = new Question();
             updateQuestion.setGmt_modified(System.currentTimeMillis());
@@ -161,7 +165,7 @@ public class QuestionService {
             example.createCriteria().andIdEqualTo(question.getId());
 
             int updated = questionMapper.updateByExampleSelective(updateQuestion, example);
-            if (updated != 1){
+            if (updated != 1) {
                 throw new CustomizeException(CustomizeErrorCode.QUESTION_NOT_FOUND);
             }
         }
@@ -173,5 +177,27 @@ public class QuestionService {
         question.setView_count(1);
 
         questionExtMapper.incView(question);
+    }
+
+    public List<QuestionDto> selectRelated(QuestionDto questionDto) {
+        if (StringUtils.isBlank(questionDto.getTag())) {
+            return new ArrayList<>();
+        }
+
+        String[] tags = StringUtils.split(questionDto.getTag(), ",");
+        String regexpTags = String.join("|", tags);
+        Question question = new Question();
+        question.setId(questionDto.getId());
+        question.setTag(regexpTags);
+
+        List<Question> relatedQuestions = questionExtMapper.selectRelated(question);
+        List<QuestionDto> questionDtoList = relatedQuestions.stream().map(question1 -> {
+            QuestionDto questionDtoTemp = new QuestionDto();
+            BeanUtils.copyProperties(question1,questionDtoTemp);
+
+            return questionDtoTemp;
+        }).collect(Collectors.toList());
+
+        return questionDtoList;
     }
 }

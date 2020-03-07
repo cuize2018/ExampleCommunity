@@ -43,6 +43,20 @@ body{
     margin-top: 25px;
 }
 
+.question-tag{
+    margin-right: 5px;
+}
+
+.question-related{
+    padding-left: 1px;
+    list-style: none;
+}
+
+.question-related .q-list{
+    line-height: 32px;
+}
+
+
 /*头像样式*/
 .head_img {
     height:64px;
