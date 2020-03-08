@@ -1,10 +1,12 @@
 package com.xk.community.controller;
 
+import com.xk.community.cache.TagCache;
 import com.xk.community.dto.QuestionDto;
 import com.xk.community.mapper.QuestionMapper;
 import com.xk.community.model.Question;
 import com.xk.community.model.User;
 import com.xk.community.service.QuestionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,8 @@ public class PublishController {
 
     //若是GET方法则渲染页面
     @GetMapping("/publish")
-    public String publish(){
+    public String publish(Model model){
+        model.addAttribute("tags", TagCache.get());
         return "publish";
     }
 
@@ -33,6 +36,8 @@ public class PublishController {
         model.addAttribute("description",question.getDescription());
         model.addAttribute("tag",question.getTag());
         model.addAttribute("id",question.getId());
+
+        model.addAttribute("tags", TagCache.get());
 
         return "publish";
     }
@@ -50,6 +55,7 @@ public class PublishController {
         model.addAttribute("title",title);
         model.addAttribute("description",description);
         model.addAttribute("tag",tag);
+        model.addAttribute("tags", TagCache.get());
 
         //验证信息是否为空，若为空则返回到publish页面，同时显示error信息
         if (title==null||title.equals("")){
@@ -60,6 +66,12 @@ public class PublishController {
             return "publish";
         }  if (tag==null||tag.equals("")){
             model.addAttribute("error","标签不可为空");
+            return "publish";
+        }
+
+        String inValid = TagCache.filterInValid(tag);
+        if (StringUtils.isNotBlank(inValid)){
+            model.addAttribute("error","输入非法标签" + inValid);
             return "publish";
         }
 

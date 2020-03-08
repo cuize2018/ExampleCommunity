@@ -56,6 +56,17 @@ body{
     line-height: 32px;
 }
 
+.publish-tag-tab{
+    display: none;
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.publish-tag-tab .label-info{
+    margin-right: 10px;
+
+}
+
 
 /*头像样式*/
 .head_img {
