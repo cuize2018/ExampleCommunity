@@ -9,8 +9,8 @@ import java.util.List;
  * 页面信息数据结构，用于存储分页所用的全部信息
  */
 @Data
-public class PageDto {
-    private List<QuestionDto> questions;
+public class PageDto<T> {
+    private List<T> data;
     private boolean showPrevious;
     private boolean showFirstPage;
     private boolean showNext;

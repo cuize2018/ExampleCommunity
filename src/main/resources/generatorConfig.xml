@@ -43,5 +43,9 @@
             <property name="useActualColumnNames" value="true"/>
         </table>
 
+        <table schema="community" tableName="notification" domainObjectName="Notification" >
+            <property name="useActualColumnNames" value="true"/>
+        </table>
+
     </context>
 </generatorConfiguration>

@@ -1,7 +1,10 @@
 package com.xk.community.controller;
 
+import com.xk.community.dto.NotificationDto;
 import com.xk.community.dto.PageDto;
+import com.xk.community.model.Notification;
 import com.xk.community.model.User;
+import com.xk.community.service.NotificationService;
 import com.xk.community.service.QuestionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +20,8 @@ public class ProfileController {
 
     @Autowired
     private QuestionService questionService;
+    @Autowired
+    private NotificationService notificationService;
 
     @GetMapping("/profile/{action}")
     public String profile(@PathVariable(name = "action")String action,
@@ -31,14 +36,21 @@ public class ProfileController {
         if (action.equals("questions")){
             model.addAttribute("section", "question");
             model.addAttribute("sectionName", "我的提问");
+
+            PageDto userPageInfo = questionService.list(user.getId(), page, size);
+            model.addAttribute("userPageInfos", userPageInfo);
         }
         else if (action.equals("replies")){
+
+            PageDto userNotifyPageInfo = notificationService.list(user.getId(), page, size);
+            Long unReadCount = notificationService.unReadCount(user.getId());
             model.addAttribute("section", "replies");
+            model.addAttribute("userPageInfos", userNotifyPageInfo);
+            model.addAttribute("unReadCount", unReadCount);
             model.addAttribute("sectionName", "最新回复");
         }
 
-        PageDto userPageInfo = questionService.list(user.getId(), page, size);
-        model.addAttribute("userPageInfos", userPageInfo);
+
         return "profile";
     }
 }

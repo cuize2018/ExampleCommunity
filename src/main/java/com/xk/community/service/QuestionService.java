@@ -36,8 +36,8 @@ public class QuestionService {
     private UserMapper userMapper;
 
     //根据指定页面和范围查询问题，使用PageDto页面信息存储
-    public PageDto list(Integer page, Integer size) {
-        PageDto pageDto = new PageDto();
+    public PageDto<QuestionDto> list(Integer page, Integer size) {
+        PageDto<QuestionDto> pageDto = new PageDto<>();
 
         Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
 
@@ -76,12 +76,12 @@ public class QuestionService {
             questionDtos.add(questionDto);
         }
 
-        pageDto.setQuestions(questionDtos);
+        pageDto.setData(questionDtos);
         return pageDto;
     }
 
-    public PageDto list(Long userId, Integer page, Integer size) {
-        PageDto pageDto = new PageDto();
+    public PageDto<QuestionDto> list(Long userId, Integer page, Integer size) {
+        PageDto<QuestionDto> pageDto = new PageDto<>();
 
         QuestionExample example = new QuestionExample();
         example.createCriteria().andCreatorEqualTo(userId);
@@ -108,6 +108,8 @@ public class QuestionService {
 
         QuestionExample example1 = new QuestionExample();
         example1.createCriteria().andCreatorEqualTo(userId);
+        example1.setOrderByClause("gmt_modified desc");
+
         List<Question> questions = questionMapper.selectByExampleWithRowbounds(example1, new RowBounds(offset, size));
 
         List<QuestionDto> questionDtos = new ArrayList<>();
@@ -124,7 +126,7 @@ public class QuestionService {
             questionDtos.add(questionDto);
         }
 
-        pageDto.setQuestions(questionDtos);
+        pageDto.setData(questionDtos);
         return pageDto;
     }
 
