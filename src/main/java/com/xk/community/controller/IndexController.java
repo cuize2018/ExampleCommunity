@@ -16,8 +16,6 @@ import javax.servlet.http.HttpServletRequest;
 public class IndexController {
     @Autowired
     private QuestionService questionService;
-    @Autowired
-    private NotificationService notificationService;
 
     /**
      *
@@ -29,18 +27,12 @@ public class IndexController {
     @GetMapping("/")
     public String index(Model model,
                         @RequestParam(name = "page", defaultValue = "1") Integer page,
-                        @RequestParam(name = "size", defaultValue = "5") Integer size,
-                        HttpServletRequest httpServletRequest) {
+                        @RequestParam(name = "size", defaultValue = "5") Integer size) {
 
         //显示页面信息，把有页面信息加入model
         //使用SpringBoot的Service来组装
         PageDto pageInfo = questionService.list(page, size);
 
-        User user = (User)httpServletRequest.getSession().getAttribute("user");
-        if (user != null) {
-            Long unReadCount = notificationService.unReadCount(user.getId());
-            model.addAttribute("unReadCount", unReadCount);
-        }
         model.addAttribute("pageInfos", pageInfo);
         return "index";
     }

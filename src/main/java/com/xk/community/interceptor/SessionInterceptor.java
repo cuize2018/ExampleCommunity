@@ -3,6 +3,7 @@ package com.xk.community.interceptor;
 import com.xk.community.mapper.UserMapper;
 import com.xk.community.model.User;
 import com.xk.community.model.UserExample;
+import com.xk.community.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.HandlerInterceptor;
@@ -21,6 +22,8 @@ public class SessionInterceptor implements HandlerInterceptor {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private NotificationService notificationService;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
@@ -39,6 +42,8 @@ public class SessionInterceptor implements HandlerInterceptor {
                     if (users.size() != 0) {
                         //若数据库中存在user信息，则把user信息写入session
                         request.getSession().setAttribute("user", users.get(0));
+                        Long unReadCount = notificationService.unReadCount(users.get(0).getId());
+                        request.getSession().setAttribute("unReadCount", unReadCount);
                     }
                     break;
                 }
