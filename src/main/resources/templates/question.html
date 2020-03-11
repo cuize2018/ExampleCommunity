@@ -130,13 +130,13 @@
                         <div class="media-left">
                             <a href="#">
                                 <img class="media-object img-rounded"
-                                     th:src="${questionInfo.getUser().getAvatar_url()}">
+                                     th:src="${session.user != null?session.user.avatar_url:'/img/tourist.png'}">
                             </a>
                         </div>
 
                         <div class="media-body">
                             <h5 class="media-heading name">
-                                <span th:text="${questionInfo.getUser().getName()}"></span>
+                                <span th:text="${session.user != null?session.user.name:'游客'}"></span>
                             </h5>
                         </div>
                     </div>
