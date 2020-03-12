@@ -1,5 +1,6 @@
 package com.xk.community.mapper;
 
+import com.xk.community.dto.QuestionQueryDto;
 import com.xk.community.model.Question;
 import com.xk.community.model.QuestionExample;
 import org.apache.ibatis.annotations.Param;
@@ -12,4 +13,8 @@ public interface QuestionExtMapper {
     int incView(Question record);
     int incCommentCount(Question record);
     List<Question> selectRelated(Question question);
+
+    Integer countBySearch(QuestionQueryDto questionQueryDto);
+
+    List<Question> selectBySearch(QuestionQueryDto questionQueryDto);
 }

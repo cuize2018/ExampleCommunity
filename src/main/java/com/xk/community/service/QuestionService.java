@@ -2,6 +2,7 @@ package com.xk.community.service;
 
 import com.xk.community.dto.PageDto;
 import com.xk.community.dto.QuestionDto;
+import com.xk.community.dto.QuestionQueryDto;
 import com.xk.community.exception.CustomizeErrorCode;
 import com.xk.community.exception.CustomizeException;
 import com.xk.community.mapper.QuestionExtMapper;
@@ -36,17 +37,28 @@ public class QuestionService {
     private UserMapper userMapper;
 
     //根据指定页面和范围查询问题，使用PageDto页面信息存储
-    public PageDto<QuestionDto> list(Integer page, Integer size) {
+    public PageDto<QuestionDto> list(String search, Integer page, Integer size) {
+        if (StringUtils.isNotBlank(search)) {
+            String[] tags = StringUtils.split(search, " ");
+             search = String.join("|", tags);
+        }
+
+
+
         PageDto<QuestionDto> pageDto = new PageDto<>();
 
-        Integer totalCount = (int) questionMapper.countByExample(new QuestionExample());
+        QuestionQueryDto questionQueryDto = new QuestionQueryDto();
+        questionQueryDto.setSearch(search);
+        Integer totalCount = questionExtMapper.countBySearch(questionQueryDto);
 
         //计算总页数
         int totalPages = totalCount / size;
         if (totalCount % size != 0) {
             totalPages += 1;
         }
+        if (totalPages == 0)totalPages = 1;
         //控制页码范围，1 <= page <= totalPages
+
         if (page < 1) {
             page = 1;
         }
@@ -58,10 +70,10 @@ public class QuestionService {
 
         //offset = size*(page -1)
         int offset = size * (page - 1);
+        questionQueryDto.setSize(size);
+        questionQueryDto.setPage(offset);
 
-        QuestionExample questionExample = new QuestionExample();
-        questionExample.setOrderByClause("gmt_modified desc");
-        List<Question> questions = questionMapper.selectByExampleWithRowbounds(questionExample, new RowBounds(offset, size));
+        List<Question> questions = questionExtMapper.selectBySearch(questionQueryDto);
         List<QuestionDto> questionDtos = new ArrayList<>();
 
         for (Question question : questions) {
