@@ -56,30 +56,30 @@
                 <ul class="pagination">
 <!--                    首页-->
                     <li th:if="${pageInfos.showFirstPage}">
-                        <a href="/?page=1" aria-label="First">
+                        <a th:href="@{/(page=1,search=${searchContent})}" aria-label="First">
                             <span aria-hidden="true">&lt;&lt;</span>
                         </a>
                     </li >
 <!--                    上一页-->
                     <li th:if="${pageInfos.showPrevious}">
-                        <a th:href="@{/(page=${pageInfos.getPage()-1})}" aria-label="Previous">
+                        <a th:href="@{/(page=${pageInfos.getPage()-1},search=${searchContent})}" aria-label="Previous">
                             <span aria-hidden="true">&lt;</span>
                         </a>
                     </li >
 <!--                    当前页码高亮-->
                     <li th:each="page : ${pageInfos.getPages()}" th:class="${pageInfos.getPage() == page}? 'active' : ''">
-                        <a th:href="@{/(page=${page})}" th:text="${page}">
+                        <a th:href="@{/(page=${page}, search=${searchContent})}" th:text="${page}">
                         </a>
                     </li>
 <!--                    下一页-->
                     <li th:if="${pageInfos.showNext}">
-                        <a th:href="@{/(page=${pageInfos.getPage()+1})}" aria-label="Next">
+                        <a th:href="@{/(page=${pageInfos.getPage()+1}, search=${searchContent})}" aria-label="Next">
                             <span aria-hidden="true">&gt;</span>
                         </a>
                     </li >
 <!--                    末页-->
                     <li th:if="${pageInfos.showEndPage}">
-                        <a th:href="@{/(page=${pageInfos.getTotalPages()})}" aria-label="End">
+                        <a th:href="@{/(page=${pageInfos.getTotalPages()}, search=${searchContent})}" aria-label="End">
                             <span aria-hidden="true">&gt;&gt;</span>
                         </a>
                     </li >
